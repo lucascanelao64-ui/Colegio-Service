@@ -26,4 +26,10 @@ public class AlumnoServiceImpl implements AlumnoService {
        Alumno alumnoGuardado = alumnoRepository.save(alumno);
         return alumnoGuardado;
     }
+
+    @Override
+    public void eliminarAlumno(Integer id) {
+        alumnoRepository.deleteById(id);
+    }
+
 }

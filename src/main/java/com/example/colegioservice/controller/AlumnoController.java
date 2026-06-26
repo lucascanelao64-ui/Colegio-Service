@@ -30,4 +30,10 @@ public class AlumnoController {
         return alumnoGuardadoOk;
     }
 
+    @DeleteMapping("eliminarAlumno/{id}")
+    public String eliminarAlumno(@PathVariable Integer id) {
+        alumnoService.eliminarAlumno(id);
+        return "El alumno fue eliminado con exito ...";
+    }
+
 }
