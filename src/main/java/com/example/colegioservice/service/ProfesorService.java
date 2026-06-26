@@ -9,4 +9,6 @@ public interface ProfesorService {
 
     List<Profesor> buscarProfesor();
 
+
+
 }

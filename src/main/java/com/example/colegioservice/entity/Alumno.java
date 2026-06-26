@@ -1,8 +1,6 @@
 package com.example.colegioservice.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Table
@@ -11,6 +9,7 @@ import lombok.Data;
 public class Alumno {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
     private String apellido;
