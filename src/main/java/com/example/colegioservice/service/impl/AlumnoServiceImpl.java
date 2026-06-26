@@ -20,4 +20,10 @@ public class AlumnoServiceImpl implements AlumnoService {
         List<Alumno> alumnos = alumnoRepository.findAll();
         return alumnos;
     }
+
+    @Override
+    public Alumno guardarAlumno(Alumno alumno) {
+       Alumno alumnoGuardado = alumnoRepository.save(alumno);
+        return alumnoGuardado;
+    }
 }

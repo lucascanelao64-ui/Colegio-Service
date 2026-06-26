@@ -7,5 +7,7 @@ import java.util.List;
 public interface AlumnoService {
 
     List<Alumno> buscarAlumnos();
+    Alumno guardarAlumno(Alumno alumno);
+
     //declarr crear. actualizar y borrar
 }

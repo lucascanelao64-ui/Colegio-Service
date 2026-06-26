@@ -4,6 +4,7 @@ import com.example.colegioservice.entity.Alumno;
 import com.example.colegioservice.service.AlumnoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,12 @@ public class AlumnoController {
 
         alumnos = alumnoService.buscarAlumnos();
         return alumnos;
+    }
+
+    @PostMapping("guardarAlumno")
+    public Alumno guardarAlumno(Alumno alumno) {
+        Alumno alumnoGuardadoOk = alumnoService.guardarAlumno(alumno);
+        return alumnoGuardadoOk;
     }
 
 }
