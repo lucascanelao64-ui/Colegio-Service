@@ -22,6 +22,17 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
 
     @Override
+    public List<Alumno> buscarAlumnosFiltro(Integer edad, String sexo, String materia) {
+        if (edad != null){
+            List<Alumno> alumnos = alumnoRepository.findAlumnoByEdad(edad);
+            return alumnos;
+        }else {
+            return null;
+        }
+
+    }
+
+    @Override
     public Alumno guardarAlumno(Alumno alumno) {
        Alumno alumnoGuardado = alumnoRepository.save(alumno);
         return alumnoGuardado;

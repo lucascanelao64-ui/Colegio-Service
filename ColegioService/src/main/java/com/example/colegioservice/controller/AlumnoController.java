@@ -24,6 +24,17 @@ public class AlumnoController {
         return alumnos;
     }
 
+    @GetMapping("listarAlumnos-filtro")
+    public List<Alumno> listarAlumnosFiltro(@RequestParam String sexo,
+                                            @RequestParam Integer edad,
+                                            @RequestParam String materia) {
+
+        List<Alumno> alumnos = new ArrayList<>();
+
+        alumnos = alumnoService.buscarAlumnosFiltro(edad,sexo, materia);
+        return alumnos;
+    }
+
     @PostMapping("guardarAlumno")
     public Alumno guardarAlumno(@RequestBody Alumno alumno) {
         Alumno alumnoGuardadoOk = alumnoService.guardarAlumno(alumno);
