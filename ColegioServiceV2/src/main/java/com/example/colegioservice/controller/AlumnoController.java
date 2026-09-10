@@ -2,54 +2,59 @@ package com.example.colegioservice.controller;
 
 import com.example.colegioservice.entity.Alumno;
 import com.example.colegioservice.service.AlumnoService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/alumnos")
-@AllArgsConstructor
 public class AlumnoController {
 
-    private final AlumnoService alumnoService;
+    @Autowired
+    private AlumnoService alumnoService;
 
-    @GetMapping("listarAlumnos")
-    public List<Alumno> listarAlumnos() {
-
-        List<Alumno> alumnos = new ArrayList<>();
-
-        alumnos = alumnoService.buscarAlumnos();
-        return alumnos;
+    // 1. Obtener todos los alumnos
+    @GetMapping
+    public ResponseEntity<List<Alumno>> listarAlumnos() {
+        return ResponseEntity.ok(alumnoService.buscarAlumnos());
     }
 
+    // 2. Filtrar alumnos por parámetros (edad, sexo, materia)
     @GetMapping("/filtro")
-    public List<Alumno> listarAlumnosFiltro(@RequestParam (required = false) String sexo,
-                                            @RequestParam (required = false) Integer edad,
-                                            @RequestParam (required = false)  String materia) {
+    public ResponseEntity<List<Alumno>> listarAlumnosFiltro(
+            @RequestParam(name = "edad", required = false) Integer edad,
+            @RequestParam(name = "sexo", required = false) String sexo,
+            @RequestParam(name = "materia", required = false) String materia) {
 
-        List<Alumno> alumnos = new ArrayList<>();
-
-        alumnos = alumnoService.buscarAlumnosFiltro(edad,sexo, materia);
-        return alumnos;
+        List<Alumno> alumnos = alumnoService.buscarAlumnosFiltro(edad, sexo, materia);
+        return ResponseEntity.ok(alumnos);
     }
 
-    @PostMapping("guardarAlumno")
-    public Alumno guardarAlumno(@RequestBody Alumno alumno) {
-        Alumno alumnoGuardadoOk = alumnoService.guardarAlumno(alumno);
-        return alumnoGuardadoOk;
+    // 3. Guardar un nuevo alumno
+    @PostMapping
+    public ResponseEntity<Alumno> guardarAlumno(@RequestBody Alumno alumno) {
+        Alumno nuevoAlumno = alumnoService.guardarAlumno(alumno);
+        return new ResponseEntity<>(nuevoAlumno, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("eliminarAlumno/{id}")
-    public String eliminarAlumno(@PathVariable Integer id) {
+    // 4. Actualizar un alumno existente
+    @PutMapping("/{id}")
+    public ResponseEntity<Alumno> actualizarAlumno(
+            @PathVariable Integer id,
+            @RequestBody Alumno alumno) {
+
+        alumno.setId(id);
+        Alumno alumnoActualizado = alumnoService.guardarAlumno(alumno);
+        return ResponseEntity.ok(alumnoActualizado);
+    }
+
+    // 5. Eliminar un alumno por ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarAlumno(@PathVariable Integer id) {
         alumnoService.eliminarAlumno(id);
-        return "El alumno fue eliminado con exito ...";
-    }
-
-    @PutMapping("actualizarAlumno/{id}")
-    public Alumno actualizarAlumno(@PathVariable Integer id, @RequestBody Alumno alumno) {
-       return alumnoService.actualizarAlumno(id, alumno);
-
+        return ResponseEntity.noContent().build();
     }
 }
