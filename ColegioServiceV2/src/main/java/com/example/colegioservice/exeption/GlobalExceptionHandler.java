@@ -57,4 +57,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
     }
 
+    // 3. Captura la excepción personalizada cuando no se encuentra un recurso en base datos o donde lo busque
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("timestamp", LocalDateTime.now());
+        respuesta.put("status", HttpStatus.NOT_FOUND.value());
+        respuesta.put("error", "Recurso no encontrado");
+        respuesta.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
+    }
+
+    // agregar tu exeption de DNI dupplicado
+    
+
 }

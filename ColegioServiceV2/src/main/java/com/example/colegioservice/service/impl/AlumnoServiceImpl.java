@@ -4,11 +4,11 @@ import com.example.colegioservice.entity.Alumno;
 import com.example.colegioservice.repository.AlumnoRepository;
 import com.example.colegioservice.service.AlumnoService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.example.colegioservice.exeption.ResourceNotFoundException;
 @Service
 @AllArgsConstructor
 public class AlumnoServiceImpl implements AlumnoService {
@@ -19,6 +19,11 @@ public class AlumnoServiceImpl implements AlumnoService {
     public List<Alumno> buscarAlumnos() {
         List<Alumno> alumnos = alumnoRepository.findAll();
         return alumnos;
+    }
+
+    @Override
+    public Alumno buscarAlumnoPorId(Integer id) {
+        return alumnoRepository.findById(id).orElse(null);
     }
     @Override
     public List<Alumno> buscarAlumnosFiltro(Integer edad, String sexo, String materia) {
@@ -40,20 +45,21 @@ public class AlumnoServiceImpl implements AlumnoService {
     }
     @Override
     public Alumno actualizarAlumno(Integer id, Alumno alumnoActualizado) {
-        Alumno alumnoExistente = alumnoRepository.findById(id).orElse(null);
-        if (alumnoExistente != null) {
-            alumnoExistente.setNombre(alumnoActualizado.getNombre());
-            alumnoExistente.setApellido(alumnoActualizado.getApellido());
-            alumnoExistente.setEdad(alumnoActualizado.getEdad());
-            alumnoExistente.setSexo(alumnoActualizado.getSexo());
-            return alumnoRepository.save(alumnoExistente);
-        }
-        return null;
+        Alumno alumnoExistente = alumnoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alumno no encontrado con el ID: " + id));
+
+        alumnoExistente.setNombre(alumnoActualizado.getNombre());
+        alumnoExistente.setApellido(alumnoActualizado.getApellido());
+        alumnoExistente.setEdad(alumnoActualizado.getEdad());
+        alumnoExistente.setSexo(alumnoActualizado.getSexo());
+        return alumnoRepository.save(alumnoExistente);
     }
 
     @Override
     public void eliminarAlumno(Integer id) {
-        alumnoRepository.deleteById(id);
+        Alumno alumnoExistente = alumnoRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("No se puede eliminar. Alumno no encontrado con el ID: " + id));
+        alumnoRepository.delete(alumnoExistente);
     }
 
 }

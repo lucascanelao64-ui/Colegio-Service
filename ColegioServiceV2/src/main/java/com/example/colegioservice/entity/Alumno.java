@@ -49,4 +49,6 @@ public class Alumno {
     @Email(message = "El correo debe tener un formato válido (ejemplo@dominio.com)")
     private String correo;
 
+    private Integer dni; // validar que solo sea numeros, validar que tenga exactamente 8 digitos, y validar por una EXEPCION que dni registrado no se pueda volver a registrar ( nombre de la clase exeption ResourceDocumentNoRepeat)
+
 }
