@@ -7,6 +7,7 @@ import java.util.List;
 public interface AlumnoService {
 
     List<Alumno> buscarAlumnos();
+    Alumno buscarAlumnoPorId(Integer id);
     List<Alumno> buscarAlumnosFiltro(Integer edad,String sexo,String materia);
     Alumno guardarAlumno(Alumno alumno);
     void eliminarAlumno(Integer id);
